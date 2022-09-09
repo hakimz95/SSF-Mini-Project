@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Watchlist App</title>
+</head>
+<body>
+    <form action="">
+        <input type="submit" value="Save">
+        <div class="card" th:each="movies : *{movies}">
+            <img th:src = "${movies.imageurl}" width="200" height="200/">
+            <div class="container">
+                <p>
+                    Id: 
+                    <span th:text="${movies.id}"></span>
+                </p>
+    
+                <p>
+                    <b>
+                        <span th:text="${movies.title}"></span>
+                    </b>
+                </p>
+    
+                <p>
+                    <span th:text="${movies.overview}"></span>
+                </p>
+    
+                <p>
+                    Rating: 
+                    <span th:text="${fields.rating}"></span>
+                </p>
+                <input type="checkbox"><label>Save</label>
+    
+            </div>
+        </div>
+    </form>
+</body>
+</html>
