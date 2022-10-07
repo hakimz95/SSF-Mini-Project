@@ -24,6 +24,7 @@ public class Movies implements Serializable {
     private String releaseDate;
     private String posterPath;
     private String rating;
+    private String queryString;
 
     public String getId() {
         return id;
@@ -73,6 +74,14 @@ public class Movies implements Serializable {
         this.rating = rating;
     }
 
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
     @Override
     public String toString() {
         return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate= " + releaseDate + ", posterPath = " + posterPath + ", rating=" + rating + "]";
@@ -113,6 +122,52 @@ public class Movies implements Serializable {
             }
         }
 
+        return movieList;
+    }
+
+    public static List<Movies> createJsonSearchMovies(String queryString, String json) throws IOException {
+
+        List<Movies> movieList = new LinkedList<>();
+        
+        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
+            JsonReader jr = Json.createReader(is);
+            JsonObject jo = jr.readObject();
+            JsonArray ja = jo.getJsonArray("results");
+
+            int length;
+            if (ja.size() < 2) {
+                length = ja.size();
+            }
+            else {
+                length = 2;
+            }
+
+            for (int i = 0; i < ja.size(); i++) {
+                Movies movies = new Movies();
+                String imageUrl = "https://image.tmdb.org/t/p/original/";
+                
+                JsonObject jobj = ja.getJsonObject(i);
+                String id = jobj.getJsonNumber("id").toString();
+                String title = jobj.getString("title");
+                String overview = jobj.getString("overview");
+                String releaseDate = jobj.getString("release_date");
+                String posterPath = jobj.getString("poster_path");
+                String rating = jobj.getJsonNumber("vote_average").toString();
+
+                movies.setId(id);
+                movies.setTitle(title);
+                movies.setOverview(overview);
+                movies.setReleaseDate(releaseDate);
+                movies.setPosterPath(imageUrl + posterPath);
+                movies.setRating(rating);
+                movies.setQueryString(queryString);
+
+                movieList.add(movies);
+
+                //Check to see if the list movies is created 
+                //System.out.println(movies);
+            }
+        }
         return movieList;
     }
 }

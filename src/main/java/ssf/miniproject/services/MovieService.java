@@ -99,4 +99,34 @@ public class MovieService {
         }
         return Optional.empty();
     }
+
+    public Optional<List<Movies>> getSearchMovie(String queryString) {
+        //API Url
+        String searchUrl = "https://api.themoviedb.org/3/search/movie";
+
+        //Create endpoint URL with query
+        String searchMovieUrl = UriComponentsBuilder.fromUriString(searchUrl)
+                                                    .queryParam("api_key", apiKey)
+                                                    .queryParam("language", "en")
+                                                    .queryParam("query", queryString)
+                                                    .queryParam("page", "1")
+                                                    .queryParam("include_adult", "false")
+                                                    .toUriString();
+        List<Movies> searchMovieList = new LinkedList<>();
+
+        //Make a call to TMDB API
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = null;
+
+        try {
+            resp = template.getForEntity(searchMovieUrl, String.class);
+            searchMovieList = Movies.createJsonGetMovies(resp.getBody());
+            //logger.info("resp body: " + resp.getBody());
+            
+            return Optional.of(searchMovieList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

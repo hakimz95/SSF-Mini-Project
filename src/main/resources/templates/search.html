@@ -55,9 +55,9 @@
       </nav>
 
     <div class="container" style="padding-top: 25px;">
-        <p class="h2" style="color:#eee">Popular Movies</p>
+        <h2 th:text="'Results for &#147;' + *{queryString} + '&#8221;'" style="color:#eee"></h2>
         <div class="row row-cols-1 row-cols-md-5 g-20">
-                <div class="card" th:each="i : ${popularMovies}">
+                <div class="card" th:each="i : ${searchMovies}">
                     <img class="card-img-top" th:src="@{${i.posterPath}}">
                     <div class="card-body">
                         <div class="movie-info">
