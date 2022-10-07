@@ -1,51 +1,102 @@
 package ssf.miniproject.services;
 
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ssf.miniproject.model.Arrays;
+import ssf.miniproject.model.Movies;
 
 @Service
 public class MovieService {
     private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
-    
-    //API URL
-    private static String discoverUrl = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc";
 
     //Get API key from environment variables in the computer system
     private static String apiKey = System.getenv("TMDB_API_KEY");
 
-    public Arrays getMovies() {
+    public Optional<List<Movies>> getTrendingMovies() {
+        //API URL
+        String trendingUrl = "https://api.themoviedb.org/3/trending/movie/week";
 
         //Create endpoint URL with query
-        String discoverMovieUrl = UriComponentsBuilder.fromUriString(discoverUrl)
-                                         .queryParam("api_key", apiKey)
-                                         .toUriString();
-
-        logger.info("Complete discover movie URI API address: " + discoverMovieUrl);
+        String trendingMovieUrl = UriComponentsBuilder.fromUriString(trendingUrl)
+                                                    .queryParam("api_key", apiKey)
+                                                    .queryParam("language", "en")
+                                                    .toUriString();
+        List<Movies> trendingMovieList = new LinkedList<>();
 
         //Make a call to TMDB API
         RestTemplate template = new RestTemplate();
         ResponseEntity<String> resp = null;
 
         try {
-            resp = template.getForEntity(discoverMovieUrl, String.class);
-            Arrays a = Arrays.create(resp.getBody());
-            return a;
-        }
-        catch (Exception e) {
-            logger.error(e.getMessage());
+            resp = template.getForEntity(trendingMovieUrl, String.class);
+            trendingMovieList = Movies.createJsonGetMovies(resp.getBody());
+
+            return Optional.of(trendingMovieList);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        return null;
+        return Optional.empty();
     }
 
+    public Optional<List<Movies>> getTopRatedMovies() {
+        //API Url
+        String topRatedUrl = "https://api.themoviedb.org/3/movie/top_rated";
+
+        //Create endpoint URL with query
+        String topRatedMovieUrl = UriComponentsBuilder.fromUriString(topRatedUrl)
+                                                    .queryParam("api_key", apiKey)
+                                                    .queryParam("language", "en")
+                                                    .queryParam("page", "1")
+                                                    .toUriString();
+        List<Movies> topRatedMovieList = new LinkedList<>();
+
+        //Make a call to TMDB API
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = null;
+
+        try {
+            resp = template.getForEntity(topRatedMovieUrl, String.class);
+            topRatedMovieList = Movies.createJsonGetMovies(resp.getBody());
+
+            return Optional.of(topRatedMovieList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public Optional<List<Movies>> getPopularMovies() {
+        //API Url
+        String popularUrl = "https://api.themoviedb.org/3/movie/popular";
+
+        //Create endpoint URL with query
+        String popularMovieUrl = UriComponentsBuilder.fromUriString(popularUrl)
+                                                    .queryParam("api_key", apiKey)
+                                                    .queryParam("language", "en")
+                                                    .queryParam("page", "1")
+                                                    .toUriString();
+        List<Movies> popularMovieList = new LinkedList<>();
+
+        //Make a call to TMDB API
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = null;
+
+        try {
+            resp = template.getForEntity(popularMovieUrl, String.class);
+            popularMovieList = Movies.createJsonGetMovies(resp.getBody());
+
+            return Optional.of(popularMovieList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

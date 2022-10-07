@@ -1,75 +1,118 @@
 package ssf.miniproject.model;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
-import javax.xml.crypto.Data;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonString;
+import jakarta.json.JsonReader;
 
-public class Movies implements Data {
+public class Movies implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Movies.class);
 
     private String id;
-    private String overview;
-    private String imageurl;
     private String title;
+    private String overview;
+    private String releaseDate;
+    private String posterPath;
     private String rating;
 
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
-    public String getOverview() {
-        return overview;
-    }
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-    public String getImageurl() {
-        return imageurl;
-    }
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
-    }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
     public String getRating() {
         return rating;
     }
+
     public void setRating(String rating) {
         this.rating = rating;
     }
 
-    public static Movies createJson(JsonObject jo) throws IOException {
-        logger.info("Movies json");
+    @Override
+    public String toString() {
+        return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate= " + releaseDate + ", posterPath = " + posterPath + ", rating=" + rating + "]";
+    }
 
-        Movies m = new Movies();
+    public static List<Movies> createJsonGetMovies(String json) throws IOException {
 
-        JsonString jsnId = jo.getJsonString("id");
-        m.id = jsnId.getString();
+        List<Movies> movieList = new LinkedList<>();
 
-        JsonString jsnOverview = jo.getJsonString("overview");
-        m.overview = jsnOverview.getString();
+        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
+            JsonReader jr = Json.createReader(is);
+            JsonObject jo = jr.readObject();
+            JsonArray ja = jo.getJsonArray("results");
 
-        JsonString jsnImageurl = jo.getJsonString("poster_path");
-        m.imageurl = jsnImageurl.getString();
+            for (int i = 0; i < ja.size(); i++) {
+                Movies movies = new Movies();
+                String imageUrl = "https://image.tmdb.org/t/p/original/";
+                
+                JsonObject jobj = ja.getJsonObject(i);
+                String id = jobj.getJsonNumber("id").toString();
+                String title = jobj.getString("title");
+                String overview = jobj.getString("overview");
+                String releaseDate = jobj.getString("release_date");
+                String posterPath = jobj.getString("poster_path");
+                String rating = jobj.getJsonNumber("vote_average").toString();
 
-        JsonString jsnTitle = jo.getJsonString("title");
-        m.title = jsnTitle.getString();
+                movies.setId(id);
+                movies.setTitle(title);
+                movies.setOverview(overview);
+                movies.setReleaseDate(releaseDate);
+                movies.setPosterPath(imageUrl + posterPath);
+                movies.setRating(rating);
 
-        JsonString jsnRating = jo.getJsonString("vote_average");
-        m.rating = jsnRating.getString();
+                movieList.add(movies);
 
-        return m;
+                //Check to see if the list movies is created 
+                //System.out.println(movies);
+            }
+        }
+
+        return movieList;
     }
 }

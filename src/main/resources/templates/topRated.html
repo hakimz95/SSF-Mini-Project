@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <link th:href="@{/styles/main.css}" rel="stylesheet" />
+        <link th:href="@{/styles/cards.css}" rel="stylesheet" />
+</head>
+<body>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!--Toggle button when screen collapses-->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <!--Website icon/homepage/trending-->
+                <a class="navbar-brand" href="/trending">
+                    <img src="/img/movie-icon.png" width="30" height="30"/>
+                </a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!--Trending-->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/trending">Trending</a>
+                    </li>
+                    <!--Top Rated-->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/topRated">Top Rated</a>
+                    </li>
+                    <!--Most Popular-->
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/popular">Most Popular</a>
+                    </li>
+                </ul>
+                <form class="d-flex input-group w-auto">
+                <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Type query"
+                    aria-label="Search"
+                />
+                <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    data-mdb-ripple-color="dark"
+                >
+                    Search
+                </button>
+                </form>
+            </div>
+        </div>
+      </nav>
+
+    <div class="container" style="padding-top: 25px;">
+        <p class="h2" style="color:#eee">Top Rated Movies</p>
+        <div class="row row-cols-1 row-cols-md-5 g-20">
+                <div class="card" th:each="i : ${topRatedMovies}">
+                    <img class="card-img-top" th:src="@{${i.posterPath}}">
+                    <div class="card-body">
+                        <div class="movie-info">
+                            <h5 class="card-title" th:text="*{i.title}"></h5>
+                            <span class="rating-num" th:text="*{i.rating}"></span>
+                        </div>
+                        <div class="movie-overview">
+                            <p class="card-text" th:text="*{i.overview}"></p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+</body>
+</html>
