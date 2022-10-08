@@ -29,6 +29,18 @@
     font-weight: bold;
 }
 
+.movie-rating span.green{
+    color:lightgreen;
+}
+
+.movie-rating span.orange{
+    color:orange;
+}
+
+.movie-rating span.red{
+    color:red;
+}
+
 .watchlist-button {
     background-color: #1c64f3;
     border-color: #0d04ff;

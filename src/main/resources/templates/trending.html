@@ -63,7 +63,7 @@
                     <div class="card-body">
                         <div class="movie-info">
                             <h5 class="card-title" th:text="*{i.title}"></h5>
-                            <span id="rating" onload="getColor()" th:text="*{i.rating}"></span>
+                            <span th:class="*{i.ratingColour}" th:text="*{i.rating}"></span>
                         </div>
                         <div class="movie-overview">
                             <p class="h5" style="font-weight: bold;">Overview</p>
@@ -75,20 +75,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            getColor();
-        });
-        function getColor(rating) {
-            if(rating>= 8){
-                return 'green'
-            }else if(rating >= 5){
-                return "orange"
-            }else{
-                return 'red'
-            }
-        }
-    </script>
 </body>
 </html>

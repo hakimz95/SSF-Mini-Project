@@ -30,6 +30,7 @@ public class Movies implements Serializable {
     private String queryString;
     private List<String> genres;
     private List<String> countries;
+    private static String ratingColour;
 
     public String getId() {
         return id;
@@ -127,11 +128,19 @@ public class Movies implements Serializable {
         this.countries = countries;
     }
 
+    public String getRatingColour() {
+        return ratingColour;
+    }
+
+    public void setRatingColour(String ratingColour) {
+        Movies.ratingColour = ratingColour;
+    }
+
     @Override
     public String toString() {
         return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate=" + releaseDate + ", releaseYear=" + releaseYear + 
         ", posterPath=" + posterPath + ", rating=" + rating + ", runtime=" + runtime + ", link=" + link + 
-        ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + "]";
+        ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + ", ratingColour=" + ratingColour + "]";
     }
 
     public static List<Movies> createJsonGetMovies(String json) throws IOException {
@@ -156,6 +165,15 @@ public class Movies implements Serializable {
                 float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
                 int scale = (int) Math.pow(10, 1);
                 rating = (float) Math.round(rating * scale) / scale;
+                if(rating >= 8) {
+                    ratingColour = "green";
+                } 
+                else if(rating >= 5) {
+                    ratingColour = "orange";
+                }
+                else {
+                    ratingColour = "red";
+                }
 
                 movies.setId(id);
                 movies.setTitle(title);
@@ -163,6 +181,7 @@ public class Movies implements Serializable {
                 movies.setReleaseDate(releaseDate);
                 movies.setPosterPath(imageUrl + posterPath);
                 movies.setRating(rating);
+                movies.setRatingColour(ratingColour);
 
                 movieList.add(movies);
 
@@ -204,6 +223,15 @@ public class Movies implements Serializable {
                 float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
                 int scale = (int) Math.pow(10, 1);
                 rating = (float) Math.round(rating * scale) / scale;
+                if(rating >= 8) {
+                    ratingColour = "green";
+                } 
+                else if(rating >= 5) {
+                    ratingColour = "orange";
+                }
+                else {
+                    ratingColour = "red";
+                }
 
                 movies.setId(id);
                 movies.setTitle(title);
@@ -211,6 +239,7 @@ public class Movies implements Serializable {
                 movies.setReleaseDate(releaseDate);
                 movies.setPosterPath(imageUrl + posterPath);
                 movies.setRating(rating);
+                movies.setRatingColour(ratingColour);
                 movies.setQueryString(queryString);
 
                 movieList.add(movies);
@@ -258,6 +287,15 @@ public class Movies implements Serializable {
             float rating = jo.getJsonNumber("vote_average").bigDecimalValue().floatValue();
             int scale = (int) Math.pow(10, 1);
             rating = (float) Math.round(rating * scale) / scale;
+            if(rating >= 8) {
+                ratingColour = "green";
+            } 
+            else if(rating >= 5) {
+                ratingColour = "orange";
+            }
+            else {
+                ratingColour = "red";
+            }
             String runtime = jo.getJsonNumber("runtime").toString();
             String link = jo.getString("homepage");
 
@@ -268,13 +306,14 @@ public class Movies implements Serializable {
             movies.setReleaseYear(releaseYear);
             movies.setPosterPath(imageUrl + posterPath);
             movies.setRating(rating);
+            movies.setRatingColour(ratingColour);
             movies.setRuntime(runtime);
             movies.setLink(link);
             movies.setGenres(genres);
             movies.setCountries(countries);
 
             //Check to see if the list movies is created 
-            //System.out.println(movies);
+            System.out.println(movies);
         }
         return movies;
 
