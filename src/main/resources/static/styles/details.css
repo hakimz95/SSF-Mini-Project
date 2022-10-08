@@ -1,0 +1,41 @@
+.card {
+    background-color:#C0C0C0;
+    overflow: hidden;
+}
+
+.card-body {
+    position: relative;
+    height: 100%;
+}
+
+.blueing {
+    color: #37a;
+}
+
+.card-body-bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+}
+
+.movie-rating {
+    color:#eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    letter-spacing: 0.5px;
+}
+
+.movie-rating span{
+    background-color: var(--primary-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.watchlist-button {
+    background-color: #1c64f3;
+    border-color: #0d04ff;
+    color: #fff;
+    margin-top: 5px;
+}

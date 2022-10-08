@@ -129,4 +129,32 @@ public class MovieService {
         }
         return Optional.empty();
     }
+
+    public Optional<Movies> getMovieDetails(String id) {
+        //API Url
+        String detailsUrl = "https://api.themoviedb.org/3/movie/" + id + "?";
+
+        //Create endpoint URL with query
+        String movieDetailsUrl = UriComponentsBuilder.fromUriString(detailsUrl)
+                                                    .queryParam("api_key", apiKey)
+                                                    .queryParam("language", "en")
+                                                    .toUriString();
+        //logger.info("movieDetailsUrl: " + movieDetailsUrl);
+        Movies movies = new Movies();
+
+        //Make a call to TMDB API
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = null;
+
+        try {
+            resp = template.getForEntity(movieDetailsUrl, String.class);
+            movies = Movies.createJsonMovieDetails(resp.getBody());
+            //logger.info("resp body: " + resp.getBody());
+            
+            return Optional.of(movies);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 }

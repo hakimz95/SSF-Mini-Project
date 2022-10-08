@@ -22,9 +22,13 @@ public class Movies implements Serializable {
     private String title;
     private String overview;
     private String releaseDate;
+    private String releaseYear;
     private String posterPath;
-    private String rating;
+    private float rating;
+    private String runtime;
     private String queryString;
+    private List<String> genres;
+    private List<String> countries;
 
     public String getId() {
         return id;
@@ -58,6 +62,14 @@ public class Movies implements Serializable {
         this.releaseDate = releaseDate;
     }
 
+    public String getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(String releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
     public String getPosterPath() {
         return posterPath;
     }
@@ -66,12 +78,20 @@ public class Movies implements Serializable {
         this.posterPath = posterPath;
     }
 
-    public String getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
     }
 
     public String getQueryString() {
@@ -82,9 +102,27 @@ public class Movies implements Serializable {
         this.queryString = queryString;
     }
 
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
+    public List<String> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<String> countries) {
+        this.countries = countries;
+    }
+
     @Override
     public String toString() {
-        return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate= " + releaseDate + ", posterPath = " + posterPath + ", rating=" + rating + "]";
+        return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate=" + releaseDate + ", releaseYear=" + releaseYear + 
+        ", posterPath=" + posterPath + ", rating=" + rating + ", runtime=" + runtime + 
+        ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + "]";
     }
 
     public static List<Movies> createJsonGetMovies(String json) throws IOException {
@@ -106,7 +144,9 @@ public class Movies implements Serializable {
                 String overview = jobj.getString("overview");
                 String releaseDate = jobj.getString("release_date");
                 String posterPath = jobj.getString("poster_path");
-                String rating = jobj.getJsonNumber("vote_average").toString();
+                float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
+                int scale = (int) Math.pow(10, 1);
+                rating = (float) Math.round(rating * scale) / scale;
 
                 movies.setId(id);
                 movies.setTitle(title);
@@ -152,7 +192,9 @@ public class Movies implements Serializable {
                 String overview = jobj.getString("overview");
                 String releaseDate = jobj.getString("release_date");
                 String posterPath = jobj.getString("poster_path");
-                String rating = jobj.getJsonNumber("vote_average").toString();
+                float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
+                int scale = (int) Math.pow(10, 1);
+                rating = (float) Math.round(rating * scale) / scale;
 
                 movies.setId(id);
                 movies.setTitle(title);
@@ -169,5 +211,61 @@ public class Movies implements Serializable {
             }
         }
         return movieList;
+    }
+
+    public static Movies createJsonMovieDetails(String json) throws IOException {
+
+        Movies movies = new Movies();
+
+        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
+            JsonReader jr = Json.createReader(is);
+            JsonObject jo = jr.readObject();
+            JsonArray jaGenres = jo.getJsonArray("genres");
+            List<String> genres = new LinkedList<>();
+            JsonArray jaCountries = jo.getJsonArray("production_countries");
+            List<String> countries = new LinkedList<>();
+
+            for (int i = 0; i < jaGenres.size(); i++) {
+                JsonObject item = jaGenres.getJsonObject(i);
+                String genre = item.getString("name");
+                genres.add(genre);
+            }
+
+            for (int i = 0; i < jaCountries.size(); i++) {
+                JsonObject item = jaCountries.getJsonObject(i);
+                String country = item.getString("name");
+                countries.add(country);
+            }
+
+            String imageUrl = "https://image.tmdb.org/t/p/original/";
+
+            String id = jo.getJsonNumber("id").toString();
+            String title = jo.getString("title");
+            String overview = jo.getString("overview");
+            String releaseDate = jo.getString("release_date");
+            String[] releaseDateArr = releaseDate.split("-");
+            String releaseYear = releaseDateArr[0];
+            String posterPath = jo.getString("poster_path");
+            float rating = jo.getJsonNumber("vote_average").bigDecimalValue().floatValue();
+            int scale = (int) Math.pow(10, 1);
+            rating = (float) Math.round(rating * scale) / scale;
+            String runtime = jo.getJsonNumber("runtime").toString();
+
+            movies.setId(id);
+            movies.setTitle(title);
+            movies.setOverview(overview);
+            movies.setReleaseDate(releaseDate);
+            movies.setReleaseYear(releaseYear);
+            movies.setPosterPath(imageUrl + posterPath);
+            movies.setRating(rating);
+            movies.setRuntime(runtime);
+            movies.setGenres(genres);
+            movies.setCountries(countries);
+
+            //Check to see if the list movies is created 
+            //System.out.println(movies);
+        }
+        return movies;
+
     }
 }
