@@ -104,10 +104,11 @@ public class MovieController {
         Movies movies = optMovie.get();
         List<String> movieCountryList = movies.getCountries();
         List<String> movieGenreList = movies.getGenres();
+        List<String> movieLanguageList = movies.getLanguages();
 
         model.addAttribute("movie", movies);
         model.addAttribute("movieCountryList", movieCountryList);
-        model.addAttribute("movieGenreList", movieGenreList);
+        model.addAttribute("movieLanguageList", movieLanguageList);
 
         return "details";
     }

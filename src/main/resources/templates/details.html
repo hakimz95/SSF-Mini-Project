@@ -74,11 +74,17 @@
                         Production Country:
                         <span th:each="i, iterStat : ${movieCountryList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
                         <br>
+                        Languages:
+                        <span th:each="i, iterStat : ${movieLanguageList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
+                        <br>
                         Release Date:
                         <span th:text="*{movie.releaseDate}"></span>
                         <br>
                         Runtime:
                         <span th:text="*{movie.runtime} + ' mins'"></span>
+                        <br>
+                        Status:
+                        <span th:text="*{movie.status}"></span>
                         <br><br>
                         <a th:href="*{movie.link}">
                             <p th:text="*{movie.link}"></p>

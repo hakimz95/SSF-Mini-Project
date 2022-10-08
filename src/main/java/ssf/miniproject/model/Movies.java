@@ -25,12 +25,14 @@ public class Movies implements Serializable {
     private String releaseYear;
     private String posterPath;
     private float rating;
+    private static String ratingColour;
     private String runtime;
+    private String status;
     private String link;
     private String queryString;
     private List<String> genres;
     private List<String> countries;
-    private static String ratingColour;
+    private List<String> languages;
 
     public String getId() {
         return id;
@@ -88,12 +90,28 @@ public class Movies implements Serializable {
         this.rating = rating;
     }
 
+    public String getRatingColour() {
+        return ratingColour;
+    }
+
+    public void setRatingColour(String ratingColour) {
+        Movies.ratingColour = ratingColour;
+    }
+
     public String getRuntime() {
         return runtime;
     }
 
     public void setRuntime(String runtime) {
         this.runtime = runtime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getLink() {
@@ -128,19 +146,19 @@ public class Movies implements Serializable {
         this.countries = countries;
     }
 
-    public String getRatingColour() {
-        return ratingColour;
+    public List<String> getLanguages() {
+        return languages;
     }
 
-    public void setRatingColour(String ratingColour) {
-        Movies.ratingColour = ratingColour;
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
     }
 
     @Override
     public String toString() {
         return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate=" + releaseDate + ", releaseYear=" + releaseYear + 
         ", posterPath=" + posterPath + ", rating=" + rating + ", runtime=" + runtime + ", link=" + link + 
-        ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + ", ratingColour=" + ratingColour + "]";
+        ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + ", languages=" + languages + ", ratingColour=" + ratingColour + "]";
     }
 
     public static List<Movies> createJsonGetMovies(String json) throws IOException {
@@ -165,7 +183,7 @@ public class Movies implements Serializable {
                 float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
                 int scale = (int) Math.pow(10, 1);
                 rating = (float) Math.round(rating * scale) / scale;
-                if(rating >= 8) {
+                if(rating >= 7.5) {
                     ratingColour = "green";
                 } 
                 else if(rating >= 5) {
@@ -223,7 +241,7 @@ public class Movies implements Serializable {
                 float rating = jobj.getJsonNumber("vote_average").bigDecimalValue().floatValue();
                 int scale = (int) Math.pow(10, 1);
                 rating = (float) Math.round(rating * scale) / scale;
-                if(rating >= 8) {
+                if(rating >= 7.5) {
                     ratingColour = "green";
                 } 
                 else if(rating >= 5) {
@@ -262,6 +280,8 @@ public class Movies implements Serializable {
             List<String> genres = new LinkedList<>();
             JsonArray jaCountries = jo.getJsonArray("production_countries");
             List<String> countries = new LinkedList<>();
+            JsonArray jaLang = jo.getJsonArray("spoken_languages");
+            List<String> languages = new LinkedList<>();
 
             for (int i = 0; i < jaGenres.size(); i++) {
                 JsonObject item = jaGenres.getJsonObject(i);
@@ -273,6 +293,12 @@ public class Movies implements Serializable {
                 JsonObject item = jaCountries.getJsonObject(i);
                 String country = item.getString("name");
                 countries.add(country);
+            }
+
+            for (int i = 0; i < jaLang.size(); i++) {
+                JsonObject item = jaLang.getJsonObject(i);
+                String lang = item.getString("name");
+                languages.add(lang);
             }
 
             String imageUrl = "https://image.tmdb.org/t/p/original/";
@@ -287,7 +313,7 @@ public class Movies implements Serializable {
             float rating = jo.getJsonNumber("vote_average").bigDecimalValue().floatValue();
             int scale = (int) Math.pow(10, 1);
             rating = (float) Math.round(rating * scale) / scale;
-            if(rating >= 8) {
+            if(rating >= 7.5) {
                 ratingColour = "green";
             } 
             else if(rating >= 5) {
@@ -297,6 +323,7 @@ public class Movies implements Serializable {
                 ratingColour = "red";
             }
             String runtime = jo.getJsonNumber("runtime").toString();
+            String status = jo.getString("status");
             String link = jo.getString("homepage");
 
             movies.setId(id);
@@ -308,9 +335,11 @@ public class Movies implements Serializable {
             movies.setRating(rating);
             movies.setRatingColour(ratingColour);
             movies.setRuntime(runtime);
+            movies.setStatus(status);
             movies.setLink(link);
             movies.setGenres(genres);
             movies.setCountries(countries);
+            movies.setLanguages(languages);
 
             //Check to see if the list movies is created 
             System.out.println(movies);
