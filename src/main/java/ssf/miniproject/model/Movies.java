@@ -26,6 +26,7 @@ public class Movies implements Serializable {
     private String posterPath;
     private float rating;
     private String runtime;
+    private String link;
     private String queryString;
     private List<String> genres;
     private List<String> countries;
@@ -94,6 +95,14 @@ public class Movies implements Serializable {
         this.runtime = runtime;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getQueryString() {
         return queryString;
     }
@@ -121,7 +130,7 @@ public class Movies implements Serializable {
     @Override
     public String toString() {
         return "Movies [id=" + id + ", title=" + title + ", overview=" + overview + ", releaseDate=" + releaseDate + ", releaseYear=" + releaseYear + 
-        ", posterPath=" + posterPath + ", rating=" + rating + ", runtime=" + runtime + 
+        ", posterPath=" + posterPath + ", rating=" + rating + ", runtime=" + runtime + ", link=" + link + 
         ", queryString=" + queryString + ", genres=" + genres + ", countries=" + countries + "]";
     }
 
@@ -250,6 +259,7 @@ public class Movies implements Serializable {
             int scale = (int) Math.pow(10, 1);
             rating = (float) Math.round(rating * scale) / scale;
             String runtime = jo.getJsonNumber("runtime").toString();
+            String link = jo.getString("homepage");
 
             movies.setId(id);
             movies.setTitle(title);
@@ -259,6 +269,7 @@ public class Movies implements Serializable {
             movies.setPosterPath(imageUrl + posterPath);
             movies.setRating(rating);
             movies.setRuntime(runtime);
+            movies.setLink(link);
             movies.setGenres(genres);
             movies.setCountries(countries);
 

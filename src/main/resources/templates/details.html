@@ -69,16 +69,20 @@
                         <p class="card-text" th:text="*{movie.overview}"></p>
                         <br>
                         Genre:
-                        <span class="blueing" th:each="i, iterStat : ${movieGenreList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
+                        <span th:each="i, iterStat : ${movieGenreList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
                         <br>
                         Production Country:
-                        <span class="blueing" th:each="i, iterStat : ${movieCountryList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
+                        <span th:each="i, iterStat : ${movieCountryList}" th:text="!${iterStat.last} ? ${i} + ', ': ${i}"></span>
                         <br>
                         Release Date:
-                        <span class="blueing" th:text="*{movie.releaseDate}"></span>
+                        <span th:text="*{movie.releaseDate}"></span>
                         <br>
                         Runtime:
-                        <span class="blueing" th:text="*{movie.runtime} + ' mins'"></span>
+                        <span th:text="*{movie.runtime} + ' mins'"></span>
+                        <br><br>
+                        <a th:href="*{movie.link}">
+                            <p th:text="*{movie.link}"></p>
+                        </a>
                         <div class="card-body-bottom">
                             <div class="row justify-content-between">
                                 <div class="col-4">
