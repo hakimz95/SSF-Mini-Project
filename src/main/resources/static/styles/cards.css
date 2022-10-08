@@ -1,5 +1,5 @@
 .card {
-    background-color: var(--secondary-color);
+    background-color: rgba(0,0,0,0.5);
     overflow: hidden;
     margin: 20px;
 }

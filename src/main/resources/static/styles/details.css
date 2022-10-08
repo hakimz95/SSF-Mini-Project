@@ -1,6 +1,7 @@
 .card {
-    background-color:#C0C0C0;
+    background-color: rgba(0,0,0,0.5);
     overflow: hidden;
+    color: #eee;
 }
 
 .card-body {
