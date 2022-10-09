@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import ssf.miniproject.model.Movies;
+import ssf.miniproject.repositories.MovieRepository;
 import ssf.miniproject.services.MovieService;
 
 @Controller
@@ -17,6 +18,8 @@ public class TrendingMovieController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired MovieRepository movieRepository;
 
 
     @GetMapping("/trending")
