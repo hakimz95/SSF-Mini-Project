@@ -274,6 +274,7 @@ public class Movies implements Serializable {
 
                 //Check to see if the list movies is created 
                 //System.out.println(movies);
+                logger.info("movie added: " + movies.toString());
             }
         }
         return movieList;

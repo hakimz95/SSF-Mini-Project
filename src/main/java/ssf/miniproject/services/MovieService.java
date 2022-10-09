@@ -115,6 +115,8 @@ public class MovieService {
                                                     .queryParam("page", "1")
                                                     .queryParam("include_adult", "false")
                                                     .toUriString();
+                                                    
+        String searchUrlUpdate = searchMovieUrl.replace("%20", " ");
         List<Movies> searchMovieList = new LinkedList<>();
 
         //Make a call to TMDB API
@@ -122,7 +124,7 @@ public class MovieService {
         ResponseEntity<String> resp = null;
 
         try {
-            resp = template.getForEntity(searchMovieUrl, String.class);
+            resp = template.getForEntity(searchUrlUpdate, String.class);
             searchMovieList = Movies.createJsonGetMovies(resp.getBody());
             //logger.info("resp body: " + resp.getBody());
             
