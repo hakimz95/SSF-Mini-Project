@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +19,8 @@ public class MovieService {
     private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
 
     //Get API key from environment variables in the computer system
-    private static String apiKey = System.getenv("TMDB_API_KEY");
+    @Value("${TMDB_API_KEY}")
+    private String apiKey;
 
     public Optional<List<Movies>> getTrendingMovies() {
         //API URL
@@ -29,6 +31,7 @@ public class MovieService {
                                                     .queryParam("api_key", apiKey)
                                                     .queryParam("language", "en")
                                                     .toUriString();
+        //logger.info("URL with params set up: " + trendingMovieUrl);
         List<Movies> trendingMovieList = new LinkedList<>();
 
         //Make a call to TMDB API

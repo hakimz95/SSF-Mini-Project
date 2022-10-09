@@ -33,6 +33,7 @@ public class Movies implements Serializable {
     private List<String> genres;
     private List<String> countries;
     private List<String> languages;
+    private String addedDateTime;
 
     public String getId() {
         return id;
@@ -130,6 +131,14 @@ public class Movies implements Serializable {
         this.queryString = queryString;
     }
 
+    public String getAddedDateTime() {
+        return addedDateTime;
+    }
+
+    public void setAddedDateTime(String addedDateTime) {
+        this.addedDateTime = addedDateTime;
+    }
+
     public List<String> getGenres() {
         return genres;
     }
@@ -221,6 +230,7 @@ public class Movies implements Serializable {
             JsonArray ja = jo.getJsonArray("results");
 
             int length;
+
             if (ja.size() < 2) {
                 length = ja.size();
             }
@@ -228,7 +238,7 @@ public class Movies implements Serializable {
                 length = 2;
             }
 
-            for (int i = 0; i < ja.size(); i++) {
+            for (int i = 0; i < length; i++) {
                 Movies movies = new Movies();
                 String imageUrl = "https://image.tmdb.org/t/p/original/";
                 
@@ -342,9 +352,8 @@ public class Movies implements Serializable {
             movies.setLanguages(languages);
 
             //Check to see if the list movies is created 
-            System.out.println(movies);
+            //System.out.println(movies);
         }
         return movies;
-
     }
 }

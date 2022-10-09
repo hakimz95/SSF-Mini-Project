@@ -50,6 +50,9 @@
                     <input class="form-control me-2" type="text" name="query" placeholder="Search" size="30" aria-label="Search" required/>
                     <button class="btn btn-outline-light" type="submit" data-mdb-ripple-color="dark"><i class="fas fa-search"></i></button>
                 </form>
+                <form action="#" th:action="@{/index}" method="post" class="d-flex form-control-sm">
+                    <button class="btn btn-outline-light" type="submit" data-mdb-ripple-color="dark" id="button-addon2">Logout</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -97,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <form action="#" th:action="@{/login}" method="post">
+                                    <form action="#" th:action="@{/detail/{id}/favourite (username=${username}, id=${movie.id})}" method="post">
                                         <button class="btn btn-sm btn-secondary watchlist-button" type="submit" id="button-addon2">Add to Watchlist</button>
                                     </form>
                                 </div>

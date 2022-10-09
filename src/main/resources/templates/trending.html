@@ -47,8 +47,11 @@
                 </ul>
                 <!--Search Function-->
                 <form th:action="search" method="get" class="d-flex form-control-sm" role="search">
-                    <input class="form-control me-2" type="text" name="query" placeholder="Search" size="30" aria-label="Search" required/>
+                    <input class="form-control me-2" type="text" name="query" placeholder="Search" size="25" aria-label="Search" required/>
                     <button class="btn btn-outline-light" type="submit" data-mdb-ripple-color="dark"><i class="fas fa-search"></i></button>
+                </form>
+                <form action="#" th:action="@{/index}" method="post" class="d-flex form-control-sm">
+                    <button class="btn btn-outline-light" type="submit" data-mdb-ripple-color="dark" id="button-addon2">Logout</button>
                 </form>
             </div>
         </div>
